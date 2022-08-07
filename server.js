@@ -1,25 +1,18 @@
 'use strict';
 
 require('dotenv').config();
+const axios = require('axios');
 const express = require('express');
-const cors = require('cors');
 const app = express();
-// const PORT = 3000;
-const PORT = process.env.PORT;
-const weather = require('./data/weather.json');
-const { query } = require('express');
-const e = require('express');
+const cors = require('cors');
 
+const makeForecastArray = require('./weather');
+const makeMoviesArray = require('./movies');
+const PORT = process.env.PORT;
+const weatherAPIKey = process.env.WEATHER_API_KEY;
+const movieAPIKey = process.env.MOVIE_API_KEY;
 
 app.use(cors());
-
-class Forecast {
-//   static weather = require('./data/weather.json');
-  constructor(date, condition) {
-    this.date = date;
-    this.condition = condition;
-  }
-}
 
 
 app.get('/', (request, response) => {
@@ -27,42 +20,33 @@ app.get('/', (request, response) => {
 });
 
 app.get('/weather', (request, response) => {
-  let cityName = request.query.cityName.toLowerCase();
-
-  let weatherCity = weather.find(el => {
-    return cityName === el.city_name.toLowerCase();
-
-  });
-  console.log('weatherCity', weatherCity);
-  let forecastArr = makeForecastArray(weatherCity);
-
-  if(cityName !== null) {
-    response.send(forecastArr);
-    console.log('forecastArr',forecastArr);
-  } else {
-    response.send('Please enter Seattle, Paris, or Amman');
-  }
+  let url = `https://api.weatherbit.io/v2.0/forecast/daily?&key=${weatherAPIKey}&lat=${parseInt(request.query.lat)}&lon=${parseInt(request.query.lon)}`;
+  axios.get(url)
+    .then(res => {
+      let forecastArr = makeForecastArray(res.data.data);
+      response.send(forecastArr);
+    })
+    .catch((e) => {
+      console.log(e);
+      response.status(500).send(e);
+    });
 });
 
-function makeForecastArray(weatherCity) {
-  const forecastArr = weatherCity.data.map(el => {
-    let date = el.valid_date;
-    let condition = el.weather.description;
-    return new Forecast(date, condition);
-  });
-  return forecastArr;
-}
-
-app.get('/error', (request, response) => {
-
-  throw new Error('Server not happy!!');
-
+app.get('/movies', (request, response) => {
+  let url = `https://api.themoviedb.org/3/search/movie?api_key=${movieAPIKey}&query=${request.query.cityName}`;
+  axios.get(url)
+    .then(res => {
+      let moviesArr = makeMoviesArray(res.data.results);
+      response.send(moviesArr);
+    })
+    .catch((e) => {
+      console.log(e);
+      response.status(500).send(e);
+    });
 });
 
-// put error handlers down here
-app.use('*', (request, response) => {
-  console.log('catch all route hit');
-  response.status(404).send('Route Not found :(');
+app.use('*', (error, request, response, next) => {
+  response.send(500).send(error);
 });
 
 // opens up the server for requests
