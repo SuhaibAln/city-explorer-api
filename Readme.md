@@ -17,6 +17,7 @@ Requests must be pinted to the IP the server is running at.
 ![](./img/lab-06-whiteboard.png)
 ![](./img/lab-07-diagram.png)
 ![](./img/lab-08-diagram.png)
+![](./img/lab-09-diagram.png)
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
@@ -59,3 +60,20 @@ Finish time: 10:30 PM sunday
 
 Actual time needed to complete: 1.5h
 
+Lab 9, Feature 1: Modularize
+Estimate of time needed to complete: 2h
+
+Start time: 3:00 PM Thursday
+
+Finish time: 11:30 AM Saturday
+
+Actual time needed to complete: 4h
+
+Lab 9, Feature 2: Componentize
+Estimate of time needed to complete: 2h
+
+Start time: 3:00 PM Thursday
+
+Finish time: 11:30 AM Saturday
+
+Actual time needed to complete: 4h
