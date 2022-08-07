@@ -16,6 +16,7 @@ Requests must be pinted to the IP the server is running at.
 ## Architecture
 ![](./img/lab-06-whiteboard.png)
 ![](./img/lab-07-diagram.png)
+![](./img/lab-08-diagram.png)
 
 ## Change Log
 <!-- Use this area to document the iterative changes made to your application as each feature is successfully implemented. Use time stamps. Here's an example:
